@@ -72,7 +72,9 @@ Generate five complete, evaluation-relevant prompt engineering challenges for th
 
 ### What I will provide separately
 
-- Brand kit files (`/assets/brand/brand.css` and `/assets/brand/logo.svg`) — if not yet in the repo, use the fallback palette from SPEC.md §8.2
+- Brand kit is already in /assets/brand/: brand.css (with Space Grotesk + 4 brand colors: #FC624F, #F7CF46, #73DC8A, #7B31F6), plus three SVGs — use logo_merl-tech-4.svg as the primary logo
+- The brand-info.txt file in the same folder has the raw color and font info for reference
+
 - Real URLs for Apps Script, Google Sheet CSV, Slack, Hot Take Wall, and starter templates — these go into the placeholder constants after deployment
 
 ### Definition of done
