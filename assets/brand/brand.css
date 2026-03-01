@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Brand colors */
+  --color-coral:    #FC624F;   /* primary accent / Critique */
+  --color-yellow:   #F7CF46;   /* secondary accent */
+  --color-green:    #73DC8A;   /* Create path */
+  --color-purple:   #7B31F6;   /* Collab path */
+
+  /* UI colors */
+  --color-white:    #FFFFFF;
+  --color-light:    #F5F7FA;
+  --color-text:     #1A1A1A;
+  --color-muted:    #6B7280;
+  --color-border:   #E5E7EB;
+
+  /* Path semantic aliases */
+  --color-critique: var(--color-coral);
+  --color-create:   var(--color-green);
+  --color-collab:   var(--color-purple);
+
+  /* Typography */
+  --font-heading:   'Space Grotesk', Arial, sans-serif;
+  --font-body:      'Space Grotesk', Arial, sans-serif;
+
+  /* Layout */
+  --radius:         8px;
+  --shadow:         0 2px 8px rgba(0,0,0,0.08);
+  --max-width:      1100px;
+}
