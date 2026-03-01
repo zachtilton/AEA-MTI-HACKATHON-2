@@ -332,36 +332,24 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Submitting…';
 
-      const payload = {
-        formType:     'collab',
-        name:         document.getElementById('field-name').value.trim(),
-        email:        document.getElementById('field-email').value.trim(),
-        claim:        document.getElementById('field-claim').value.trim(),
-        templateLink: document.getElementById('field-template-link').value.trim(),
-        changelog:    document.getElementById('field-changelog').value.trim(),
-        remixLink:    document.getElementById('field-remix-link').value.trim(),
-        ethics:       document.getElementById('field-ethics').checked ? 'Yes' : 'No',
-        reflection:   document.getElementById('field-reflection').value.trim(),
-      };
+      const fd = new FormData();
+      fd.append('formType',     'collab');
+      fd.append('name',         document.getElementById('field-name').value.trim());
+      fd.append('email',        document.getElementById('field-email').value.trim());
+      fd.append('claim',        document.getElementById('field-claim').value.trim());
+      fd.append('templateLink', document.getElementById('field-template-link').value.trim());
+      fd.append('changelog',    document.getElementById('field-changelog').value.trim());
+      fd.append('remixLink',    document.getElementById('field-remix-link').value.trim());
+      fd.append('ethics',       document.getElementById('field-ethics').checked ? 'Yes' : 'No');
+      fd.append('reflection',   document.getElementById('field-reflection').value.trim());
 
       try {
-        const response = await fetch(APPS_SCRIPT_URL, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(payload),
-        });
-
-        const data = await response.json();
-
-        if (data.status === 'success') {
-          form.style.display = 'none';
-          successEl.classList.add('is-visible');
-          successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } else {
-          throw new Error(data.message || 'Unknown error from server');
-        }
+        await fetch(APPS_SCRIPT_URL, { method: 'POST', body: fd, mode: 'no-cors' });
+        form.style.display = 'none';
+        successEl.classList.add('is-visible');
+        successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } catch (err) {
-        errorDetail.textContent = err.message || 'Your submission could not be sent. Please check your connection and try again.';
+        errorDetail.textContent = 'Your submission could not be sent. Please check your connection and try again.';
         errorEl.classList.add('is-visible');
         errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
         submitBtn.classList.remove('is-loading');

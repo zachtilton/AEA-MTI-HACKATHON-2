@@ -28,9 +28,9 @@ function doGet(e) {
 
 // ── doPost — main form handler ────────────────────────────────────────────────
 /**
- * doPost: receive JSON POST from the submission forms, validate, append row.
+ * doPost: receive FormData POST from the submission forms, validate, append row.
  *
- * Expected JSON body fields:
+ * Fields are read from e.parameter (multipart/form-data, no preflight):
  *   formType: 'critique-create' | 'collab'
  *
  * critique-create fields:
@@ -40,17 +40,9 @@ function doGet(e) {
  *   name, email, claim, templateLink, changelog, remixLink, ethics, reflection
  */
 function doPost(e) {
-  // Set CORS headers so the browser allows the cross-origin POST
-  var headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-  };
-
   try {
-    // Parse request body
-    var body = e.postData && e.postData.contents ? e.postData.contents : '{}';
-    var data = JSON.parse(body);
+    // Read FormData fields from e.parameter
+    var data = e.parameter || {};
 
     var formType = (data.formType || '').toLowerCase().trim();
 
@@ -59,13 +51,13 @@ function doPost(e) {
     } else if (formType === 'collab') {
       appendCollabRow(data);
     } else {
-      return jsonResponse({ status: 'error', message: 'Unknown formType: ' + formType }, headers);
+      return jsonResponse({ status: 'error', message: 'Unknown formType: ' + formType });
     }
 
-    return jsonResponse({ status: 'success' }, headers);
+    return jsonResponse({ status: 'success' });
 
   } catch (err) {
-    return jsonResponse({ status: 'error', message: err.message || 'Internal error' }, headers);
+    return jsonResponse({ status: 'error', message: err.message || 'Internal error' });
   }
 }
 
