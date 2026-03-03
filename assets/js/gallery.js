@@ -39,6 +39,7 @@ let pollTimer = null;
 let lastRowCountCritique = 0;
 let lastRowCountCreate   = 0;
 let lastRowCountCollab   = 0;
+let modalTrigger = null;      // Element that opened the modal (for focus restore)
 
 // ============================================================================
 // CSV Parser
@@ -210,6 +211,40 @@ function buildCard(sub) {
   body.appendChild(nameEl);
   body.appendChild(claimEl);
 
+  // Evidence (truncated) — sub.evidence for Critique/Create, changelog for Collab
+  const evidenceRaw = sub.type === 'collab' ? sub.changelog : sub.evidence;
+  if (evidenceRaw && evidenceRaw.trim()) {
+    const evidenceText = sub.type === 'collab'
+      ? evidenceRaw.split('\n')
+          .map(l => l.replace(/^[\u2022\-\*]\s*/, '').trim())
+          .filter(Boolean)
+          .map(b => '• ' + b)
+          .join('\n')
+      : evidenceRaw;
+
+    const evWrap = document.createElement('div');
+    evWrap.className = 'gallery-card__evidence-wrap';
+
+    const evEl = document.createElement('p');
+    evEl.className = 'gallery-card__evidence';
+    evEl.textContent = evidenceText;
+
+    const evFade = document.createElement('div');
+    evFade.className = 'gallery-card__evidence-fade';
+    evFade.setAttribute('aria-hidden', 'true');
+
+    evWrap.appendChild(evEl);
+    evWrap.appendChild(evFade);
+    body.appendChild(evWrap);
+
+    const readMore = document.createElement('button');
+    readMore.className = 'gallery-card__read-more';
+    readMore.type = 'button';
+    readMore.textContent = 'Read more \u2192';
+    readMore.addEventListener('click', () => openModal(sub, readMore));
+    body.appendChild(readMore);
+  }
+
   // Footer
   const footer = document.createElement('div');
   footer.className = 'gallery-card__footer';
@@ -221,27 +256,6 @@ function buildCard(sub) {
   footer.appendChild(ts);
 
   if (sub.type === 'collab') {
-    // Collab-specific: changelog + remix link instead of reflection
-    if (sub.changelog) {
-      const clDiv = document.createElement('div');
-      clDiv.className = 'gallery-card__changelog';
-      const clTitle = document.createElement('p');
-      clTitle.className = 'gallery-card__changelog-title';
-      clTitle.textContent = 'What changed';
-      clDiv.appendChild(clTitle);
-      // Render each bullet
-      const bullets = sub.changelog
-        .split('\n')
-        .map(l => l.replace(/^[\u2022\-\*]\s*/, '').trim())
-        .filter(Boolean);
-      bullets.forEach(bullet => {
-        const p = document.createElement('p');
-        p.textContent = '• ' + bullet;
-        clDiv.appendChild(p);
-      });
-      body.appendChild(clDiv);
-    }
-
     if (sub.templateLink) {
       const basedOn = document.createElement('p');
       basedOn.style.cssText = 'font-size: var(--text-xs); color: var(--color-muted); margin-top: var(--space-xs);';
@@ -587,6 +601,150 @@ function buildSubFilterChips(container, grid, filterBtns) {
 }
 
 // ============================================================================
+// Modal — open / populate / close
+// ============================================================================
+
+function makeModalSection(labelText) {
+  const sec = document.createElement('div');
+  sec.className = 'modal-section';
+  const label = document.createElement('p');
+  label.className = 'modal-label';
+  label.textContent = labelText;
+  sec.appendChild(label);
+  return sec;
+}
+
+function openModal(sub, triggerEl) {
+  const modal   = document.getElementById('gallery-modal');
+  const content = document.getElementById('modal-content');
+
+  const path = (sub.path || '').toLowerCase();
+  const pathClass = path === 'critique' ? 'critique'
+                  : path === 'create'   ? 'create'
+                  : 'collab';
+
+  modal.className = `gallery-modal gallery-modal--${pathClass}`;
+  modal.removeAttribute('hidden');
+  document.body.style.overflow = 'hidden';
+  modalTrigger = triggerEl || null;
+
+  content.innerHTML = '';
+
+  // Badges
+  const badgesEl = document.createElement('div');
+  badgesEl.className = 'modal-badges';
+  const pathBadge = document.createElement('span');
+  pathBadge.className = `badge badge--${pathClass}`;
+  pathBadge.textContent = sub.path || '';
+  badgesEl.appendChild(pathBadge);
+  if (sub.option) {
+    const optBadge = document.createElement('span');
+    optBadge.className = 'badge badge--option';
+    optBadge.textContent = sub.option;
+    badgesEl.appendChild(optBadge);
+  }
+  content.appendChild(badgesEl);
+
+  // Name
+  const nameEl = document.createElement('p');
+  nameEl.className = 'modal-name';
+  nameEl.textContent = sub.name || 'Anonymous';
+  content.appendChild(nameEl);
+
+  // Claim
+  const claimEl = document.createElement('p');
+  claimEl.className = 'modal-claim';
+  claimEl.id = 'modal-claim';
+  claimEl.textContent = sub.claim || '';
+  content.appendChild(claimEl);
+
+  if (sub.type === 'collab') {
+    // Full changelog
+    if (sub.changelog) {
+      const sec = makeModalSection('What changed (change-log)');
+      const bullets = sub.changelog.split('\n')
+        .map(l => l.replace(/^[\u2022\-\*]\s*/, '').trim())
+        .filter(Boolean)
+        .map(b => '• ' + b)
+        .join('\n');
+      const text = document.createElement('p');
+      text.className = 'modal-text';
+      text.textContent = bullets;
+      sec.appendChild(text);
+      content.appendChild(sec);
+    }
+
+    // Based-on template link
+    if (sub.templateLink) {
+      const sec = makeModalSection('Based on');
+      const link = document.createElement('a');
+      link.href = sub.templateLink;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.className = 'modal-link';
+      link.textContent = 'View original template \u2192';
+      sec.appendChild(link);
+      content.appendChild(sec);
+    }
+  } else {
+    // Full evidence of work
+    if (sub.evidence) {
+      const sec = makeModalSection('Evidence of work');
+      const text = document.createElement('p');
+      text.className = 'modal-text';
+      text.textContent = sub.evidence;
+      sec.appendChild(text);
+      content.appendChild(sec);
+    }
+
+    // Reflection
+    if (sub.reflection) {
+      const sec = makeModalSection('Reflection');
+      const text = document.createElement('p');
+      text.className = 'modal-reflection';
+      text.textContent = '\u201C' + sub.reflection + '\u201D';
+      sec.appendChild(text);
+      content.appendChild(sec);
+    }
+  }
+
+  // Footer: timestamp + primary link
+  const foot = document.createElement('div');
+  foot.className = 'modal-footer';
+
+  const tsEl = document.createElement('span');
+  tsEl.className = 'modal-timestamp';
+  tsEl.textContent = formatTimestamp(sub.timestamp);
+  foot.appendChild(tsEl);
+
+  const linkHref = sub.type === 'collab' ? sub.remixLink : sub.link;
+  const linkText = sub.type === 'collab' ? 'Open Remix \u2192' : 'View output \u2192';
+  if (linkHref) {
+    const link = document.createElement('a');
+    link.href = linkHref;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.className = 'modal-link';
+    link.textContent = linkText;
+    foot.appendChild(link);
+  }
+
+  content.appendChild(foot);
+
+  document.getElementById('modal-close').focus();
+}
+
+function closeModal() {
+  const modal = document.getElementById('gallery-modal');
+  modal.setAttribute('hidden', '');
+  document.body.style.overflow = '';
+  if (modalTrigger) {
+    modalTrigger.focus();
+    modalTrigger = null;
+  }
+}
+
+// ============================================================================
 // Entry point — called by gallery.html on DOMContentLoaded
 // ============================================================================
 
@@ -601,6 +759,33 @@ function initGallery() {
     console.error('Gallery: #gallery-grid not found');
     return;
   }
+
+  // Modal: close button, backdrop click, Escape key, focus trap
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  document.getElementById('modal-backdrop').addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => {
+    const modal = document.getElementById('gallery-modal');
+    if (modal.hasAttribute('hidden')) return;
+
+    if (e.key === 'Escape') {
+      closeModal();
+      return;
+    }
+
+    if (e.key === 'Tab') {
+      const focusable = Array.from(modal.querySelectorAll('button, a[href]'));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last  = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
 
   // Primary filter buttons (All / Critique / Create / Collab)
   const filterBtns = filterBar ? filterBar.querySelectorAll('.filter-btn') : [];

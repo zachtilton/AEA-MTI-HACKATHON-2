@@ -169,6 +169,25 @@
     </div>
   </footer>
 
+  <!-- ========================================================================
+       GALLERY CARD MODAL
+       ======================================================================== -->
+  <div
+    class="gallery-modal"
+    id="gallery-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-claim"
+    hidden
+  >
+    <div class="gallery-modal__backdrop" id="modal-backdrop"></div>
+    <div class="gallery-modal__panel">
+      <button class="gallery-modal__close" id="modal-close" aria-label="Close">&#215;</button>
+      <div class="gallery-modal__top" aria-hidden="true"></div>
+      <div class="gallery-modal__content" id="modal-content"></div>
+    </div>
+  </div>
+
   <!-- Gallery JS — must come after DOM, before closing body -->
   <script src="assets/js/gallery.js"></script>
   <script>
