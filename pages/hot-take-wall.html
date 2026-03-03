@@ -355,8 +355,7 @@
   <script>
     // ── Config ───────────────────────────────────────────────────────────────
     const APPS_SCRIPT_URL       = 'https://script.google.com/macros/s/AKfycbxdF0DkBRywQeJczXI_vLa8pYHtuxY00OadEdFDWurThEYk5gfU_sdBZC5RpJc9IhrIxQ/exec';
-    // PLACEHOLDER: replace with the published CSV URL for the HotTakes sheet tab
-    const SHEET_CSV_URL_HOTTAKES = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/pub?gid=842255866&single=true&output=csv';
+    const SHEET_GVIZ_URL_HOTTAKES = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/gviz/tq?tqx=out:json&gid=842255866';
 
     const REFRESH_INTERVAL_MS = 30000; // 30 seconds
 
@@ -415,28 +414,15 @@
       }
     });
 
-    // ── CSV parser (naive but sufficient — no embedded newlines in takes) ────
-    function parseCSV(text) {
-      const lines = text.trim().split('\n');
-      return lines.slice(1).map(line => {
-        // Split on comma, but respect quoted fields
-        const cols = [];
-        let cur = '';
-        let inQuote = false;
-        for (let i = 0; i < line.length; i++) {
-          const ch = line[i];
-          if (ch === '"') {
-            if (inQuote && line[i + 1] === '"') { cur += '"'; i++; }
-            else { inQuote = !inQuote; }
-          } else if (ch === ',' && !inQuote) {
-            cols.push(cur); cur = '';
-          } else {
-            cur += ch;
-          }
-        }
-        cols.push(cur);
-        return cols;
-      }).filter(cols => cols.length >= 3 && cols[2].trim());
+    // ── Gviz JSON parser ─────────────────────────────────────────────────────
+    // The gviz endpoint wraps JSON in a callback — strip it, then extract rows.
+    function parseGviz(text) {
+      const start = text.indexOf('{');
+      const end   = text.lastIndexOf('}');
+      const data  = JSON.parse(text.slice(start, end + 1));
+      return (data.table.rows || []).map(row =>
+        (row.c || []).map(cell => (cell && cell.v != null) ? String(cell.v) : '')
+      ).filter(cols => cols.length >= 3 && cols[2].trim());
     }
 
     // ── Render wall ──────────────────────────────────────────────────────────
@@ -492,16 +478,10 @@
 
     // ── Fetch and load wall ──────────────────────────────────────────────────
     async function loadWall() {
-      if (SHEET_CSV_URL_HOTTAKES === 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/pub?gid=842255866&single=true&output=csv') {
-        wallGrid.innerHTML = '<p class="htw-wall-empty">Wall coming soon &mdash; check back after launch.</p>';
-        wallMeta.textContent = 'Not yet connected.';
-        return;
-      }
       try {
-        const url  = SHEET_CSV_URL_HOTTAKES + '&t=' + Date.now();
-        const resp = await fetch(url);
-        const text = await resp.text();
-        const rows = parseCSV(text);
+        const resp = await fetch(SHEET_GVIZ_URL_HOTTAKES + '&t=' + Date.now());
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const rows = parseGviz(await resp.text());
         renderWall(rows);
       } catch (err) {
         if (wallGrid.children.length === 0 || wallGrid.querySelector('.htw-wall-empty')) {

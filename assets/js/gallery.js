@@ -1,29 +1,23 @@
 /**
  * gallery.js — AEA/MTI Hackathon 2
  *
- * Fetches submissions from three published Google Sheet CSV endpoints,
+ * Fetches submissions from three Google Sheets gviz/tq endpoints (CORS-safe),
  * merges and sorts them, renders gallery cards, and auto-refreshes
  * every 60 seconds. Supports filter buttons (path + option).
- *
- * SETUP: Replace the three SHEET_CSV_URL constants below with real URLs
- * after publishing your Google Sheet tabs as CSV.
  */
 
 // ============================================================================
 // CONFIGURATION — update these after deployment
 // ============================================================================
 
-// PLACEHOLDER: replace with the CSV publish URL for the Critique sheet
-// To get this URL: File → Share → Publish to web → Critique tab → CSV → Copy link
-const SHEET_CSV_URL_CRITIQUE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/pub?gid=1091433995&single=true&output=csv';
+// Critique sheet — gviz JSON feed (supports CORS, no CSV CORB issues)
+const SHEET_GVIZ_URL_CRITIQUE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/gviz/tq?tqx=out:json&gid=1091433995';
 
-// PLACEHOLDER: replace with the CSV publish URL for the Create sheet
-// To get this URL: File → Share → Publish to web → Create tab → CSV → Copy link
-const SHEET_CSV_URL_CREATE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/pub?gid=1317074835&single=true&output=csv';
+// Create sheet
+const SHEET_GVIZ_URL_CREATE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/gviz/tq?tqx=out:json&gid=1317074835';
 
-// PLACEHOLDER: replace with the CSV publish URL for the Collab sheet
-// To get this URL: File → Share → Publish to web → Collab tab → CSV → Copy link
-const SHEET_CSV_URL_COLLAB = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/pub?gid=2115396050&single=true&output=csv';
+// Collab sheet
+const SHEET_GVIZ_URL_COLLAB = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/gviz/tq?tqx=out:json&gid=2115396050';
 
 // How often to poll for new submissions (milliseconds)
 const REFRESH_INTERVAL_MS = 60_000;
@@ -42,60 +36,18 @@ let lastRowCountCollab   = 0;
 let modalTrigger = null;      // Element that opened the modal (for focus restore)
 
 // ============================================================================
-// CSV Parser
-// A minimal RFC-4180-compliant parser that handles quoted fields.
+// Gviz JSON parser
+// The gviz endpoint wraps JSON in a callback — strip it, then extract rows.
+// Returns string[][] matching the column order of the sheet (no header row).
 // ============================================================================
 
-function parseCSV(text) {
-  const rows = [];
-  let row = [];
-  let field = '';
-  let inQuote = false;
-  const n = text.length;
-
-  for (let i = 0; i < n; i++) {
-    const ch = text[i];
-
-    if (inQuote) {
-      if (ch === '"') {
-        if (i + 1 < n && text[i + 1] === '"') {
-          // Escaped quote
-          field += '"';
-          i++;
-        } else {
-          inQuote = false;
-        }
-      } else {
-        field += ch;
-      }
-    } else {
-      if (ch === '"') {
-        inQuote = true;
-      } else if (ch === ',') {
-        row.push(field);
-        field = '';
-      } else if (ch === '\r') {
-        // skip \r in \r\n
-      } else if (ch === '\n') {
-        row.push(field);
-        field = '';
-        rows.push(row);
-        row = [];
-      } else {
-        field += ch;
-      }
-    }
-  }
-
-  // Last field / row (file may not end with newline)
-  if (field || row.length) {
-    row.push(field);
-    if (row.some(f => f.trim() !== '')) {
-      rows.push(row);
-    }
-  }
-
-  return rows;
+function parseGviz(text) {
+  const start = text.indexOf('{');
+  const end   = text.lastIndexOf('}');
+  const data  = JSON.parse(text.slice(start, end + 1));
+  return (data.table.rows || []).map(row =>
+    (row.c || []).map(cell => (cell && cell.v != null) ? String(cell.v) : '')
+  );
 }
 
 // ============================================================================
@@ -138,14 +90,13 @@ function parseCollabRow(cols) {
 }
 
 // ============================================================================
-// Fetch + parse one sheet
+// Fetch + parse one gviz sheet → returns string[][]
 // ============================================================================
 
-async function fetchSheet(url) {
-  const cacheBust = `&t=${Date.now()}`;
-  const response = await fetch(url + cacheBust);
+async function fetchGviz(url) {
+  const response = await fetch(url + '&t=' + Date.now());
   if (!response.ok) throw new Error(`HTTP ${response.status} fetching ${url}`);
-  return response.text();
+  return parseGviz(await response.text());
 }
 
 // ============================================================================
@@ -457,20 +408,18 @@ function resetFilters(grid, filterBtns, subFilterBtns) {
 
 async function fetchAndMerge() {
   const results = await Promise.allSettled([
-    fetchSheet(SHEET_CSV_URL_CRITIQUE),
-    fetchSheet(SHEET_CSV_URL_CREATE),
-    fetchSheet(SHEET_CSV_URL_COLLAB),
+    fetchGviz(SHEET_GVIZ_URL_CRITIQUE),
+    fetchGviz(SHEET_GVIZ_URL_CREATE),
+    fetchGviz(SHEET_GVIZ_URL_COLLAB),
   ]);
 
   const merged = [];
 
-  // Process Sheet 1 (Critique)
+  // Process Sheet 1 (Critique) — gviz returns data rows only (no header)
   if (results[0].status === 'fulfilled') {
-    const rows = parseCSV(results[0].value);
-    // Skip header row (row 0)
-    const dataRows = rows.slice(1);
-    lastRowCountCritique = dataRows.length;
-    dataRows.forEach(cols => {
+    const rows = results[0].value;
+    lastRowCountCritique = rows.length;
+    rows.forEach(cols => {
       const sub = parseMainRow(cols);
       if (sub && sub.name && sub.claim) merged.push(sub);
     });
@@ -478,10 +427,9 @@ async function fetchAndMerge() {
 
   // Process Sheet 2 (Create)
   if (results[1].status === 'fulfilled') {
-    const rows = parseCSV(results[1].value);
-    const dataRows = rows.slice(1);
-    lastRowCountCreate = dataRows.length;
-    dataRows.forEach(cols => {
+    const rows = results[1].value;
+    lastRowCountCreate = rows.length;
+    rows.forEach(cols => {
       const sub = parseMainRow(cols);
       if (sub && sub.name && sub.claim) merged.push(sub);
     });
@@ -489,10 +437,9 @@ async function fetchAndMerge() {
 
   // Process Sheet 3 (Collab)
   if (results[2].status === 'fulfilled') {
-    const rows = parseCSV(results[2].value);
-    const dataRows = rows.slice(1);
-    lastRowCountCollab = dataRows.length;
-    dataRows.forEach(cols => {
+    const rows = results[2].value;
+    lastRowCountCollab = rows.length;
+    rows.forEach(cols => {
       const sub = parseCollabRow(cols);
       if (sub && sub.name && sub.claim) merged.push(sub);
     });
