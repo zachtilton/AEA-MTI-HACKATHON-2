@@ -1,11 +1,11 @@
 /**
  * gallery.js — AEA/MTI Hackathon 2
  *
- * Fetches submissions from two published Google Sheet CSV endpoints,
+ * Fetches submissions from three published Google Sheet CSV endpoints,
  * merges and sorts them, renders gallery cards, and auto-refreshes
  * every 60 seconds. Supports filter buttons (path + option).
  *
- * SETUP: Replace the two SHEET_CSV_URL constants below with real URLs
+ * SETUP: Replace the three SHEET_CSV_URL constants below with real URLs
  * after publishing your Google Sheet tabs as CSV.
  */
 
@@ -13,12 +13,16 @@
 // CONFIGURATION — update these after deployment
 // ============================================================================
 
-// PLACEHOLDER: replace https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/pub?gid=420690685&single=true&output=csv with the CSV publish URL for Sheet 1 (Critique/Create)
-// To get this URL: File → Share → Publish to web → Sheet 1 → CSV → Copy link
-const SHEET_CSV_URL_CRITIQUE_CREATE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/pub?gid=420690685&single=true&output=csv';
+// PLACEHOLDER: replace with the CSV publish URL for the Critique sheet
+// To get this URL: File → Share → Publish to web → Critique tab → CSV → Copy link
+const SHEET_CSV_URL_CRITIQUE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/pub?gid=1091433995&single=true&output=csv';
 
-// PLACEHOLDER: replace https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/pub?gid=2115396050&single=true&output=csv with the CSV publish URL for Sheet 2 (Collab)
-// To get this URL: File → Share → Publish to web → Sheet 2 → CSV → Copy link
+// PLACEHOLDER: replace with the CSV publish URL for the Create sheet
+// To get this URL: File → Share → Publish to web → Create tab → CSV → Copy link
+const SHEET_CSV_URL_CREATE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/pub?gid=1317074835&single=true&output=csv';
+
+// PLACEHOLDER: replace with the CSV publish URL for the Collab sheet
+// To get this URL: File → Share → Publish to web → Collab tab → CSV → Copy link
 const SHEET_CSV_URL_COLLAB = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtSDpjQqmc5_9FpqUhmw4oaZ6iUhZdmoGZtsUifVXvjFs_VELMUfg_yNSNflo49QX_PmQ7FCmusjf-/pub?gid=2115396050&single=true&output=csv';
 
 // How often to poll for new submissions (milliseconds)
@@ -28,12 +32,13 @@ const REFRESH_INTERVAL_MS = 60_000;
 // State
 // ============================================================================
 
-let allSubmissions = [];      // Merged, parsed data from both sheets
+let allSubmissions = [];      // Merged, parsed data from all sheets
 let activePathFilter = 'All'; // Current primary filter
 let activeSubFilter = 'All';  // Current secondary (option) filter
 let pollTimer = null;
-let lastRowCountMain   = 0;
-let lastRowCountCollab = 0;
+let lastRowCountCritique = 0;
+let lastRowCountCreate   = 0;
+let lastRowCountCollab   = 0;
 
 // ============================================================================
 // CSV Parser
@@ -433,32 +438,44 @@ function resetFilters(grid, filterBtns, subFilterBtns) {
 }
 
 // ============================================================================
-// Fetch + merge both sheets, update state
+// Fetch + merge all three sheets, update state
 // ============================================================================
 
 async function fetchAndMerge() {
   const results = await Promise.allSettled([
-    fetchSheet(SHEET_CSV_URL_CRITIQUE_CREATE),
+    fetchSheet(SHEET_CSV_URL_CRITIQUE),
+    fetchSheet(SHEET_CSV_URL_CREATE),
     fetchSheet(SHEET_CSV_URL_COLLAB),
   ]);
 
   const merged = [];
 
-  // Process Sheet 1 (Critique/Create)
+  // Process Sheet 1 (Critique)
   if (results[0].status === 'fulfilled') {
     const rows = parseCSV(results[0].value);
     // Skip header row (row 0)
     const dataRows = rows.slice(1);
-    lastRowCountMain = dataRows.length;
+    lastRowCountCritique = dataRows.length;
     dataRows.forEach(cols => {
       const sub = parseMainRow(cols);
       if (sub && sub.name && sub.claim) merged.push(sub);
     });
   }
 
-  // Process Sheet 2 (Collab)
+  // Process Sheet 2 (Create)
   if (results[1].status === 'fulfilled') {
     const rows = parseCSV(results[1].value);
+    const dataRows = rows.slice(1);
+    lastRowCountCreate = dataRows.length;
+    dataRows.forEach(cols => {
+      const sub = parseMainRow(cols);
+      if (sub && sub.name && sub.claim) merged.push(sub);
+    });
+  }
+
+  // Process Sheet 3 (Collab)
+  if (results[2].status === 'fulfilled') {
+    const rows = parseCSV(results[2].value);
     const dataRows = rows.slice(1);
     lastRowCountCollab = dataRows.length;
     dataRows.forEach(cols => {

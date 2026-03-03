@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Submit your Critique or Create path entry for AEA/MTI Hackathon 2.">
-  <title>Submit — Critique &amp; Create — AEA/MTI Hackathon 2</title>
+  <meta name="description" content="Submit your Create path entry for AEA/MTI Hackathon 2.">
+  <title>Submit — Create — AEA/MTI Hackathon 2</title>
   <link rel="stylesheet" href="assets/brand/brand.css">
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
@@ -32,7 +32,7 @@
       <nav class="site-nav" id="site-nav" aria-label="Main navigation">
         <a href="index.html">Home</a>
         <a href="critique.html">Critique</a>
-        <a href="create.html">Create</a>
+        <a href="create.html" class="active">Create</a>
         <a href="collab.html">Collab</a>
         <a href="gallery.html" class="nav-cta">Open Gallery</a>
       </nav>
@@ -45,9 +45,9 @@
     <div class="form-header">
       <div class="container">
         <p class="form-header__eyebrow">Hackathon 2 — Submission Form</p>
-        <h1 class="form-header__title">Submit your entry</h1>
+        <h1 class="form-header__title">Submit your Create entry</h1>
         <p class="form-header__subtitle">
-          For the <strong>Critique</strong> and <strong>Create</strong> paths. Your entry will appear in the public gallery within a minute of submission.
+          For the <strong>Create</strong> path. Your entry will appear in the public gallery within a minute of submission.
         </p>
       </div>
     </div>
@@ -56,13 +56,13 @@
       <div class="container">
         <div class="form-wrapper">
 
-          <!-- Success message (hidden until submit succeeds) -->
+          <!-- Success message -->
           <div class="form-message form-message--success" id="form-success" role="alert" aria-live="polite">
             <p class="form-message__title">&#127881; Submission received!</p>
-            <p>Your entry is on its way to the gallery. It may take up to a minute to appear. <a href="gallery.html">View the gallery &rarr;</a></p>
+            <p>Your Create entry is on its way to the gallery. It may take up to a minute to appear. <a href="gallery.html">View the gallery &rarr;</a></p>
           </div>
 
-          <!-- Error message (hidden until submit fails) -->
+          <!-- Error message -->
           <div class="form-message form-message--error" id="form-error" role="alert" aria-live="polite">
             <p class="form-message__title">Something went wrong</p>
             <p id="form-error-detail">Your submission could not be sent. Please check your connection and try again. Your work is preserved in the form below.</p>
@@ -72,7 +72,7 @@
             id="submission-form"
             class="submission-form"
             novalidate
-            aria-label="Critique and Create path submission form"
+            aria-label="Create path submission form"
           >
 
             <!-- Name + Email -->
@@ -110,35 +110,25 @@
 
             <hr class="form-divider">
 
-            <!-- Path -->
-            <div class="form-group">
-              <label for="field-path">
-                Path <span class="required" aria-label="required">*</span>
-              </label>
-              <select id="field-path" name="path" required aria-describedby="path-hint">
-                <option value="" disabled selected>Select your path&hellip;</option>
-                <option value="Critique">Critique</option>
-                <option value="Create">Create</option>
-              </select>
-              <p class="field-hint" id="path-hint">Your option choices will update when you select a path.</p>
-            </div>
-
-            <!-- Option (dynamically filtered) -->
+            <!-- Option -->
             <div class="form-group">
               <label for="field-option">
                 Option chosen <span class="required" aria-label="required">*</span>
               </label>
-              <select id="field-option" name="option" required disabled aria-describedby="option-hint">
-                <option value="" disabled selected>Select a path first&hellip;</option>
+              <select id="field-option" name="option" required aria-describedby="option-hint">
+                <option value="" disabled selected>Select your option&hellip;</option>
+                <option value="Prompt Lab">Prompt Lab</option>
+                <option value="Custom Chatbot: Build a Tiny Helper">Custom Chatbot: Build a Tiny Helper</option>
+                <option value="Vibe-Coding Studio">Vibe-Coding Studio</option>
               </select>
-              <p class="field-hint" id="option-hint">Options are filtered by the path you choose above.</p>
+              <p class="field-hint" id="option-hint">Which Create activity did you complete?</p>
             </div>
 
             <hr class="form-divider">
 
-            <!-- One-line need / claim -->
+            <!-- One-line need or claim -->
             <div class="form-group">
-              <label for="field-claim" id="claim-label">
+              <label for="field-claim">
                 One-line need or claim <span class="required" aria-label="required">*</span>
               </label>
               <input
@@ -152,12 +142,12 @@
                 aria-describedby="claim-counter claim-hint"
               >
               <div style="display:flex; justify-content:space-between; align-items:flex-start; gap: 0.5rem;">
-                <p class="field-hint" id="claim-hint">A single sentence stating your core finding, critique, or what you made. Max 140 characters.</p>
+                <p class="field-hint" id="claim-hint">A single sentence stating your core need or what you built. Max 140 characters.</p>
                 <span class="char-counter" id="claim-counter" aria-live="polite">0 / 140</span>
               </div>
             </div>
 
-            <!-- Evidence of work (label changes dynamically) -->
+            <!-- Evidence of work (label changes per option) -->
             <div class="form-group">
               <label for="field-evidence" id="evidence-label">
                 Evidence of work <span class="required" aria-label="required">*</span>
@@ -167,7 +157,7 @@
                 name="evidence"
                 required
                 rows="6"
-                placeholder="Paste your AI exchange, critique notes, prompt, system prompt, or description of what you built..."
+                placeholder="Paste your prompt(s), system prompt, example exchanges, or description of what you built..."
                 aria-describedby="evidence-hint"
               ></textarea>
               <p class="field-hint" id="evidence-hint">
@@ -175,8 +165,8 @@
               </p>
             </div>
 
-            <!-- Link (optional, Create path) -->
-            <div class="form-group" id="link-group">
+            <!-- Link to output -->
+            <div class="form-group">
               <label for="field-link">
                 Link to output <span class="optional">(optional)</span>
               </label>
@@ -209,7 +199,7 @@
                 aria-describedby="reflection-counter reflection-hint"
               ></textarea>
               <div style="display:flex; justify-content:space-between; align-items:flex-start; gap: 0.5rem;">
-                <p class="field-hint" id="reflection-hint">This appears on your gallery card. Max 140 characters — tweet-length brevity, evaluator's precision.</p>
+                <p class="field-hint" id="reflection-hint">This appears on your gallery card. Max 140 characters.</p>
                 <span class="char-counter" id="reflection-counter" aria-live="polite">0 / 140</span>
               </div>
             </div>
@@ -235,8 +225,8 @@
 
             <!-- Submit -->
             <div class="form-submit-row">
-              <button type="submit" class="btn btn--primary btn--lg" id="submit-btn">
-                Submit my entry
+              <button type="submit" class="btn btn--create btn--lg" id="submit-btn">
+                Submit my Create entry
               </button>
               <p style="font-size: var(--text-xs); color: var(--color-muted); max-width: 30ch;">
                 Your name will be displayed publicly in the gallery.
@@ -261,7 +251,7 @@
           <div class="site-footer__cobrand">
             <img src="assets/brand/MTI%20white%20w%20color%20horizontal%20(3).png" alt="The MERL Tech Initiative logo" class="logo-mti">
             <div class="site-footer__cobrand-divider" aria-hidden="true"></div>
-            <img src="assets/brand/AEA letters.png" alt="American Evaluation Association logo">
+            <img src="assets/brand/AEA letters.png" alt="American Evaluation Association logo" class="logo-aea">
           </div>
           <p class="site-footer__tagline">
             AEA/MTI Hackathon 2: Critique • Create • Collab<br>
@@ -280,9 +270,11 @@
         </div>
 
         <div>
-          <p class="site-footer__heading">Connect</p>
+          <p class="site-footer__heading">Submit</p>
           <ul class="site-footer__links">
-            <li><a href="gallery.html">Open Gallery</a></li>
+            <li><a href="form-critique.html">Submit Critique</a></li>
+            <li><a href="form-create.html">Submit Create</a></li>
+            <li><a href="form-collab.html">Submit Collab</a></li>
             <!-- PLACEHOLDER: replace [SLACK_URL] with your Slack channel URL -->
             <li><a href="[SLACK_URL]" target="_blank" rel="noopener">Join the Slack</a></li>
           </ul>
@@ -296,110 +288,28 @@
   </footer>
 
   <script>
-    // PLACEHOLDER: replace https://script.google.com/macros/s/AKfycbxdF0DkBRywQeJczXI_vLa8pYHtuxY00OadEdFDWurThEYk5gfU_sdBZC5RpJc9IhrIxQ/exec with your deployed Google Apps Script web app URL
-    // <!-- PLACEHOLDER: replace https://script.google.com/macros/s/AKfycbxdF0DkBRywQeJczXI_vLa8pYHtuxY00OadEdFDWurThEYk5gfU_sdBZC5RpJc9IhrIxQ/exec with your deployed Apps Script URL -->
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdF0DkBRywQeJczXI_vLa8pYHtuxY00OadEdFDWurThEYk5gfU_sdBZC5RpJc9IhrIxQ/exec';
 
-    // ── Option lists per path ─────────────────────────────────────────────────
-    const PATH_OPTIONS = {
-      Critique: [
-        'Red-Team a Claim',
-        'AEA Competencies Remix',
-        'Case Snap: Failure or Success',
-      ],
-      Create: [
-        'Prompt Lab',
-        'Custom Chatbot: Build a Tiny Helper',
-        'Vibe-Coding Studio',
-      ],
-    };
-
-    // Evidence field label copy per path/option
+    // Evidence field label copy per option
     const EVIDENCE_LABELS = {
-      'Red-Team a Claim':                  'Evidence of work — pasted AI exchange or written critique',
-      'AEA Competencies Remix':            'Evidence of work — AI output and your critique notes',
-      'Case Snap: Failure or Success':     'Evidence of work — your Case Snap (Context → AI used → What happened → Why it matters)',
       'Prompt Lab':                        'Your prompt(s) and the AI\'s best output (paste or describe)',
       'Custom Chatbot: Build a Tiny Helper': 'Your system prompt and 2–3 example exchanges',
-      'Vibe-Coding Studio':               'Key prompts you used and description of what you built',
+      'Vibe-Coding Studio':                'Key prompts you used and description of what you built',
     };
 
-    // Claim field label + placeholder — Critique options only
-    const CLAIM_FIELDS = {
-      'Red-Team a Claim': {
-        label:       'The claim you\'re red-teaming',
-        placeholder: 'e.g. AI can reliably summarize qualitative interview data',
-      },
-      'AEA Competencies Remix': {
-        label:       'The competency you\'re remixing',
-        placeholder: 'e.g. Competency 5: Data collection, analysis, and interpretation',
-      },
-      'Case Snap: Failure or Success': {
-        label:       'The case you\'re describing',
-        placeholder: 'e.g. AI-generated coding in a youth program evaluation',
-      },
-    };
-    const CLAIM_DEFAULT = {
-      label:       'One-line need or claim',
-      placeholder: 'e.g. I need a prompt that helps me simplify jargon-heavy findings',
-    };
-
-    const form       = document.getElementById('submission-form');
-    const pathSel    = document.getElementById('field-path');
-    const optSel     = document.getElementById('field-option');
-    const linkGrp    = document.getElementById('link-group');
-    const evLabel    = document.getElementById('evidence-label');
-    const evHint     = document.getElementById('evidence-hint');
-    const claimInput = document.getElementById('field-claim');
-    const claimLabelEl = document.getElementById('claim-label');
-    const submitBtn  = document.getElementById('submit-btn');
-    const successEl  = document.getElementById('form-success');
-    const errorEl    = document.getElementById('form-error');
+    const form        = document.getElementById('submission-form');
+    const optSel      = document.getElementById('field-option');
+    const evLabel     = document.getElementById('evidence-label');
+    const submitBtn   = document.getElementById('submit-btn');
+    const successEl   = document.getElementById('form-success');
+    const errorEl     = document.getElementById('form-error');
     const errorDetail = document.getElementById('form-error-detail');
 
-    // ── Dynamic option dropdown ───────────────────────────────────────────────
-    pathSel.addEventListener('change', () => {
-      const path = pathSel.value;
-      const options = PATH_OPTIONS[path] || [];
-
-      // Reset and populate option dropdown
-      optSel.innerHTML = '<option value="" disabled selected>Select your option&hellip;</option>';
-      options.forEach(opt => {
-        const el = document.createElement('option');
-        el.value = opt;
-        el.textContent = opt;
-        optSel.appendChild(el);
-      });
-      optSel.disabled = false;
-
-      // Show/hide the link field (Create path only)
-      linkGrp.style.display = path === 'Create' ? '' : 'none';
-
-      // Reset dynamic labels (option not yet chosen)
-      updateEvidenceLabel(null);
-      updateClaimField(path, null);
-    });
-
+    // ── Dynamic evidence label on option change ───────────────────────────────
     optSel.addEventListener('change', () => {
-      updateEvidenceLabel(optSel.value);
-      updateClaimField(pathSel.value, optSel.value);
-    });
-
-    function updateEvidenceLabel(option) {
-      const labelBase = EVIDENCE_LABELS[option] || 'Evidence of work';
-      // Keep the required span
+      const labelBase = EVIDENCE_LABELS[optSel.value] || 'Evidence of work';
       evLabel.innerHTML = `${labelBase} <span class="required" aria-label="required">*</span>`;
-    }
-
-    function updateClaimField(path, option) {
-      const cfg = (path === 'Critique' && CLAIM_FIELDS[option]) ? CLAIM_FIELDS[option] : CLAIM_DEFAULT;
-      claimLabelEl.innerHTML = `${cfg.label} <span class="required" aria-label="required">*</span>`;
-      claimInput.placeholder = cfg.placeholder;
-      claimInput.setAttribute('aria-label', cfg.label);
-    }
-
-    // Hide link field initially (shown only for Create path)
-    linkGrp.style.display = 'none';
+    });
 
     // ── Character counters ────────────────────────────────────────────────────
     function attachCounter(inputId, counterId, max) {
@@ -421,26 +331,23 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Basic HTML5 validation
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
       }
 
-      // Hide previous messages
       successEl.classList.remove('is-visible');
       errorEl.classList.remove('is-visible');
 
-      // Loading state
       submitBtn.classList.add('is-loading');
       submitBtn.disabled = true;
       submitBtn.textContent = 'Submitting…';
 
       const fd = new FormData();
-      fd.append('formType',   'critique-create');
+      fd.append('formType',   'create');
       fd.append('name',       document.getElementById('field-name').value.trim());
       fd.append('email',      document.getElementById('field-email').value.trim());
-      fd.append('path',       pathSel.value);
+      fd.append('path',       'Create');
       fd.append('option',     optSel.value);
       fd.append('claim',      document.getElementById('field-claim').value.trim());
       fd.append('evidence',   document.getElementById('field-evidence').value.trim());
@@ -459,7 +366,7 @@
         errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
         submitBtn.classList.remove('is-loading');
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Submit my entry';
+        submitBtn.textContent = 'Submit my Create entry';
       }
     });
 

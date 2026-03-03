@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Submit your Critique path entry for AEA/MTI Hackathon 2.">
+  <title>Submit — Critique — AEA/MTI Hackathon 2</title>
+  <link rel="stylesheet" href="assets/brand/brand.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <!-- ======================================================================
+       HEADER / NAV
+       ====================================================================== -->
+  <header class="site-header">
+    <div class="container">
+      <div class="cobrand-logos">
+        <a href="index.html" class="logo-link logo-link--merl" aria-label="MERL Tech — Home">
+          <img src="assets/brand/MTI%20black%20w%20color%20horizontal%20(5).png" alt="The MERL Tech Initiative logo">
+        </a>
+        <div class="cobrand-divider" aria-hidden="true"></div>
+        <a href="https://www.eval.org" class="logo-link logo-link--aea" aria-label="American Evaluation Association" target="_blank" rel="noopener">
+          <img src="assets/brand/AEA letters.png" alt="American Evaluation Association logo">
+        </a>
+      </div>
+
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav">
+        <span class="hamburger" aria-hidden="true"></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="critique.html" class="active">Critique</a>
+        <a href="create.html">Create</a>
+        <a href="collab.html">Collab</a>
+        <a href="gallery.html" class="nav-cta">Open Gallery</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Form header -->
+    <div class="form-header">
+      <div class="container">
+        <p class="form-header__eyebrow">Hackathon 2 — Submission Form</p>
+        <h1 class="form-header__title">Submit your Critique entry</h1>
+        <p class="form-header__subtitle">
+          For the <strong>Critique</strong> path. Your entry will appear in the public gallery within a minute of submission.
+        </p>
+      </div>
+    </div>
+
+    <div class="form-page">
+      <div class="container">
+        <div class="form-wrapper">
+
+          <!-- Success message -->
+          <div class="form-message form-message--success" id="form-success" role="alert" aria-live="polite">
+            <p class="form-message__title">&#127881; Submission received!</p>
+            <p>Your Critique entry is on its way to the gallery. It may take up to a minute to appear. <a href="gallery.html">View the gallery &rarr;</a></p>
+          </div>
+
+          <!-- Error message -->
+          <div class="form-message form-message--error" id="form-error" role="alert" aria-live="polite">
+            <p class="form-message__title">Something went wrong</p>
+            <p id="form-error-detail">Your submission could not be sent. Please check your connection and try again. Your work is preserved in the form below.</p>
+          </div>
+
+          <form
+            id="submission-form"
+            class="submission-form"
+            novalidate
+            aria-label="Critique path submission form"
+          >
+
+            <!-- Name + Email -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="field-name">
+                  Your name <span class="required" aria-label="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="field-name"
+                  name="name"
+                  required
+                  autocomplete="name"
+                  placeholder="Jane Smith"
+                  maxlength="100"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="field-email">
+                  Email address <span class="required" aria-label="required">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="field-email"
+                  name="email"
+                  required
+                  autocomplete="email"
+                  placeholder="jane@example.org"
+                >
+                <p class="field-hint">Not displayed publicly. Used only for event communication.</p>
+              </div>
+            </div>
+
+            <hr class="form-divider">
+
+            <!-- Option -->
+            <div class="form-group">
+              <label for="field-option">
+                Option chosen <span class="required" aria-label="required">*</span>
+              </label>
+              <select id="field-option" name="option" required aria-describedby="option-hint">
+                <option value="" disabled selected>Select your option&hellip;</option>
+                <option value="Red-Team a Claim">Red-Team a Claim</option>
+                <option value="AEA Competencies Remix">AEA Competencies Remix</option>
+                <option value="Case Snap: Failure or Success">Case Snap: Failure or Success</option>
+              </select>
+              <p class="field-hint" id="option-hint">Which Critique activity did you complete?</p>
+            </div>
+
+            <hr class="form-divider">
+
+            <!-- One-line claim (label + placeholder update per option) -->
+            <div class="form-group">
+              <label for="field-claim" id="claim-label">
+                One-line need or claim <span class="required" aria-label="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="field-claim"
+                name="claim"
+                required
+                maxlength="140"
+                placeholder="e.g. AI can reliably summarize qualitative interview data"
+                aria-label="One-line need or claim"
+                aria-describedby="claim-counter claim-hint"
+              >
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap: 0.5rem;">
+                <p class="field-hint" id="claim-hint">A single sentence stating your core critique. Max 140 characters.</p>
+                <span class="char-counter" id="claim-counter" aria-live="polite">0 / 140</span>
+              </div>
+            </div>
+
+            <!-- Evidence of work (label changes per option) -->
+            <div class="form-group">
+              <label for="field-evidence" id="evidence-label">
+                Evidence of work <span class="required" aria-label="required">*</span>
+              </label>
+              <textarea
+                id="field-evidence"
+                name="evidence"
+                required
+                rows="6"
+                placeholder="Paste your AI exchange, critique notes, or description of your work..."
+                aria-describedby="evidence-hint"
+              ></textarea>
+              <p class="field-hint" id="evidence-hint">
+                The substance of your work. This will appear on your gallery card.
+              </p>
+            </div>
+
+            <hr class="form-divider">
+
+            <!-- 140-char reflection -->
+            <div class="form-group">
+              <label for="field-reflection">
+                140-character reflection <span class="required" aria-label="required">*</span>
+              </label>
+              <textarea
+                id="field-reflection"
+                name="reflection"
+                required
+                rows="3"
+                maxlength="140"
+                placeholder="What surprised you? What would you do differently? What should others know?"
+                aria-describedby="reflection-counter reflection-hint"
+              ></textarea>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap: 0.5rem;">
+                <p class="field-hint" id="reflection-hint">This appears on your gallery card. Max 140 characters.</p>
+                <span class="char-counter" id="reflection-counter" aria-live="polite">0 / 140</span>
+              </div>
+            </div>
+
+            <hr class="form-divider">
+
+            <!-- Ethics check -->
+            <div class="form-group">
+              <label class="checkbox-group" for="field-ethics">
+                <input
+                  type="checkbox"
+                  id="field-ethics"
+                  name="ethics"
+                  required
+                  value="confirmed"
+                >
+                <span class="checkbox-label">
+                  I confirm this submission contains no personally identifiable information (PII) or real client data. Any data used is synthetic, anonymized, or hypothetical.
+                  <span class="required" aria-label="required">*</span>
+                </span>
+              </label>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-submit-row">
+              <button type="submit" class="btn btn--critique btn--lg" id="submit-btn">
+                Submit my Critique entry
+              </button>
+              <p style="font-size: var(--text-xs); color: var(--color-muted); max-width: 30ch;">
+                Your name will be displayed publicly in the gallery.
+              </p>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================================================
+       FOOTER
+       ======================================================================== -->
+  <footer class="site-footer" aria-label="Site footer">
+    <div class="container">
+      <div class="site-footer__grid">
+
+        <div class="site-footer__brand">
+          <div class="site-footer__cobrand">
+            <img src="assets/brand/MTI%20white%20w%20color%20horizontal%20(3).png" alt="The MERL Tech Initiative logo" class="logo-mti">
+            <div class="site-footer__cobrand-divider" aria-hidden="true"></div>
+            <img src="assets/brand/AEA letters.png" alt="American Evaluation Association logo" class="logo-aea">
+          </div>
+          <p class="site-footer__tagline">
+            AEA/MTI Hackathon 2: Critique • Create • Collab<br>
+            A virtual event for evaluation practitioners.
+          </p>
+        </div>
+
+        <div>
+          <p class="site-footer__heading">Paths</p>
+          <ul class="site-footer__links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="critique.html">Critique</a></li>
+            <li><a href="create.html">Create</a></li>
+            <li><a href="collab.html">Collab</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="site-footer__heading">Submit</p>
+          <ul class="site-footer__links">
+            <li><a href="form-critique.html">Submit Critique</a></li>
+            <li><a href="form-create.html">Submit Create</a></li>
+            <li><a href="form-collab.html">Submit Collab</a></li>
+            <!-- PLACEHOLDER: replace [SLACK_URL] with your Slack channel URL -->
+            <li><a href="[SLACK_URL]" target="_blank" rel="noopener">Join the Slack</a></li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="site-footer__bottom">
+        Co-hosted by the American Evaluation Association &amp; MTI/MERL Tech.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdF0DkBRywQeJczXI_vLa8pYHtuxY00OadEdFDWurThEYk5gfU_sdBZC5RpJc9IhrIxQ/exec';
+
+    // Evidence field label copy per option
+    const EVIDENCE_LABELS = {
+      'Red-Team a Claim':              'Evidence of work — pasted AI exchange or written critique',
+      'AEA Competencies Remix':        'Evidence of work — AI output and your critique notes',
+      'Case Snap: Failure or Success': 'Evidence of work — your Case Snap (Context → AI used → What happened → Why it matters)',
+    };
+
+    // Claim field label + placeholder per option
+    const CLAIM_FIELDS = {
+      'Red-Team a Claim': {
+        label:       'The claim you\'re red-teaming',
+        placeholder: 'e.g. AI can reliably summarize qualitative interview data',
+      },
+      'AEA Competencies Remix': {
+        label:       'The competency you\'re remixing',
+        placeholder: 'e.g. Competency 5: Data collection, analysis, and interpretation',
+      },
+      'Case Snap: Failure or Success': {
+        label:       'The case you\'re describing',
+        placeholder: 'e.g. AI-generated coding in a youth program evaluation',
+      },
+    };
+    const CLAIM_DEFAULT = {
+      label:       'One-line need or claim',
+      placeholder: 'e.g. AI can reliably summarize qualitative interview data',
+    };
+
+    const form        = document.getElementById('submission-form');
+    const optSel      = document.getElementById('field-option');
+    const evLabel     = document.getElementById('evidence-label');
+    const claimInput  = document.getElementById('field-claim');
+    const claimLabelEl = document.getElementById('claim-label');
+    const submitBtn   = document.getElementById('submit-btn');
+    const successEl   = document.getElementById('form-success');
+    const errorEl     = document.getElementById('form-error');
+    const errorDetail = document.getElementById('form-error-detail');
+
+    // ── Dynamic labels on option change ──────────────────────────────────────
+    optSel.addEventListener('change', () => {
+      const opt = optSel.value;
+
+      // Evidence label
+      const labelBase = EVIDENCE_LABELS[opt] || 'Evidence of work';
+      evLabel.innerHTML = `${labelBase} <span class="required" aria-label="required">*</span>`;
+
+      // Claim label + placeholder
+      const cfg = CLAIM_FIELDS[opt] || CLAIM_DEFAULT;
+      claimLabelEl.innerHTML = `${cfg.label} <span class="required" aria-label="required">*</span>`;
+      claimInput.placeholder = cfg.placeholder;
+      claimInput.setAttribute('aria-label', cfg.label);
+    });
+
+    // ── Character counters ────────────────────────────────────────────────────
+    function attachCounter(inputId, counterId, max) {
+      const input   = document.getElementById(inputId);
+      const counter = document.getElementById(counterId);
+      const update = () => {
+        const len = input.value.length;
+        counter.textContent = `${len} / ${max}`;
+        counter.className = 'char-counter' + (len >= max ? ' danger' : len >= max * 0.85 ? ' warning' : '');
+      };
+      input.addEventListener('input', update);
+      update();
+    }
+
+    attachCounter('field-claim',      'claim-counter',      140);
+    attachCounter('field-reflection', 'reflection-counter', 140);
+
+    // ── Form submit ───────────────────────────────────────────────────────────
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      successEl.classList.remove('is-visible');
+      errorEl.classList.remove('is-visible');
+
+      submitBtn.classList.add('is-loading');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting…';
+
+      const fd = new FormData();
+      fd.append('formType',   'critique');
+      fd.append('name',       document.getElementById('field-name').value.trim());
+      fd.append('email',      document.getElementById('field-email').value.trim());
+      fd.append('path',       'Critique');
+      fd.append('option',     optSel.value);
+      fd.append('claim',      document.getElementById('field-claim').value.trim());
+      fd.append('evidence',   document.getElementById('field-evidence').value.trim());
+      fd.append('link',       '');
+      fd.append('ethics',     document.getElementById('field-ethics').checked ? 'Yes' : 'No');
+      fd.append('reflection', document.getElementById('field-reflection').value.trim());
+
+      try {
+        await fetch(APPS_SCRIPT_URL, { method: 'POST', body: fd, mode: 'no-cors' });
+        form.style.display = 'none';
+        successEl.classList.add('is-visible');
+        successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (err) {
+        errorDetail.textContent = 'Your submission could not be sent. Please check your connection and try again.';
+        errorEl.classList.add('is-visible');
+        errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        submitBtn.classList.remove('is-loading');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit my Critique entry';
+      }
+    });
+
+    // ── Nav toggle ────────────────────────────────────────────────────────────
+    const toggle = document.querySelector('.nav-toggle');
+    const nav    = document.getElementById('site-nav');
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('is-open');
+    });
+    nav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        toggle.setAttribute('aria-expanded', 'false');
+        nav.classList.remove('is-open');
+      });
+    });
+  </script>
+
+</body>
+</html>
