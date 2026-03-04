@@ -100,12 +100,26 @@ async function fetchGviz(url) {
 }
 
 // ============================================================================
-// Format a timestamp for display
+// Parse / format timestamps
+// gviz returns datetimes as "Date(year,month,day,h,m,s)" — handle both that
+// and plain date strings for sorting and display.
 // ============================================================================
+
+function parseTimestamp(ts) {
+  if (!ts) return new Date(0);
+  const m = typeof ts === 'string' && ts.match(/^Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)$/);
+  if (m) return new Date(+m[1], +m[2], +m[3], +(m[4]||0), +(m[5]||0), +(m[6]||0));
+  return new Date(ts);
+}
 
 function formatTimestamp(ts) {
   if (!ts) return '';
-  // Google Sheets timestamps are typically "M/D/YYYY HH:MM:SS"
+  // gviz returns datetimes as "Date(year,month,day,h,m,s)"
+  const m = typeof ts === 'string' && ts.match(/^Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)$/);
+  if (m) {
+    const d = new Date(+m[1], +m[2], +m[3], +(m[4]||0), +(m[5]||0), +(m[6]||0));
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
   const d = new Date(ts);
   if (isNaN(d)) return ts;
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -447,8 +461,8 @@ async function fetchAndMerge() {
 
   // Sort by timestamp descending (newest first)
   merged.sort((a, b) => {
-    const da = new Date(a.timestamp);
-    const db = new Date(b.timestamp);
+    const da = parseTimestamp(a.timestamp);
+    const db = parseTimestamp(b.timestamp);
     return db - da;
   });
 
