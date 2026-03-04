@@ -126,10 +126,10 @@
 
             <hr class="form-divider">
 
-            <!-- One-line need or claim -->
+            <!-- Name / one-liner (label updates per option) -->
             <div class="form-group">
-              <label for="field-claim">
-                One-line need or claim <span class="required" aria-label="required">*</span>
+              <label for="field-claim" id="claim-label">
+                Name of your prompt <span class="required" aria-label="required">*</span>
               </label>
               <input
                 type="text"
@@ -137,12 +137,12 @@
                 name="claim"
                 required
                 maxlength="140"
-                placeholder="e.g. I need a prompt that helps me simplify jargon-heavy findings"
-                aria-label="One-line need or claim"
+                placeholder="e.g. The Jargon Simplifier"
+                aria-label="Name of your prompt"
                 aria-describedby="claim-counter claim-hint"
               >
               <div style="display:flex; justify-content:space-between; align-items:flex-start; gap: 0.5rem;">
-                <p class="field-hint" id="claim-hint">A single sentence stating your core need or what you built. Max 140 characters.</p>
+                <p class="field-hint" id="claim-hint">What did you name or call what you built? Max 140 characters.</p>
                 <span class="char-counter" id="claim-counter" aria-live="polite">0 / 140</span>
               </div>
             </div>
@@ -290,23 +290,38 @@
   <script>
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdF0DkBRywQeJczXI_vLa8pYHtuxY00OadEdFDWurThEYk5gfU_sdBZC5RpJc9IhrIxQ/exec';
 
+    // Claim field copy per option
+    const CLAIM_FIELDS = {
+      'Prompt Lab':                          { label: 'Name of your prompt',       placeholder: 'e.g. The Jargon Simplifier' },
+      'Custom Chatbot: Build a Tiny Helper': { label: 'Name of your chatbot',      placeholder: 'e.g. The Survey Clarity Bot' },
+      'Vibe-Coding Studio':                  { label: 'Name of your tool or app',  placeholder: 'e.g. The Interview Theme Coder' },
+    };
+
     // Evidence field label copy per option
     const EVIDENCE_LABELS = {
-      'Prompt Lab':                        'Your prompt(s) and the AI\'s best output (paste or describe)',
+      'Prompt Lab':                          'Your prompt(s) and the AI\'s best output (paste or describe)',
       'Custom Chatbot: Build a Tiny Helper': 'Your system prompt and 2–3 example exchanges',
-      'Vibe-Coding Studio':                'Key prompts you used and description of what you built',
+      'Vibe-Coding Studio':                  'Key prompts you used and description of what you built',
     };
 
     const form        = document.getElementById('submission-form');
     const optSel      = document.getElementById('field-option');
+    const claimLabel  = document.getElementById('claim-label');
+    const claimInput  = document.getElementById('field-claim');
     const evLabel     = document.getElementById('evidence-label');
     const submitBtn   = document.getElementById('submit-btn');
     const successEl   = document.getElementById('form-success');
     const errorEl     = document.getElementById('form-error');
     const errorDetail = document.getElementById('form-error-detail');
 
-    // ── Dynamic evidence label on option change ───────────────────────────────
+    // ── Dynamic claim + evidence labels on option change ──────────────────────
     optSel.addEventListener('change', () => {
+      const cf = CLAIM_FIELDS[optSel.value];
+      if (cf) {
+        claimLabel.innerHTML = `${cf.label} <span class="required" aria-label="required">*</span>`;
+        claimInput.placeholder = cf.placeholder;
+        claimInput.setAttribute('aria-label', cf.label);
+      }
       const labelBase = EVIDENCE_LABELS[optSel.value] || 'Evidence of work';
       evLabel.innerHTML = `${labelBase} <span class="required" aria-label="required">*</span>`;
     });
