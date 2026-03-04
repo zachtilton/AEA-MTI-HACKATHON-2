@@ -234,7 +234,7 @@ ul, ol {
 
 /* AEA logo has a white background (no transparent version) —
    show in a small white pill so it reads cleanly on the dark footer */
-.site-footer__cobrand .logo-aea {
+.site-footer__cobrand img:not(.logo-mti) {
   background: #fff;
   padding: 3px 8px;
   border-radius: 4px;
