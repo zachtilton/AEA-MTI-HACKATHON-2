@@ -7,6 +7,34 @@
   <title>Create Path — AEA/MTI Hackathon 2</title>
   <link rel="stylesheet" href="assets/brand/brand.css">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    details.prompt-example {
+      margin-top: var(--space-md);
+    }
+    details.prompt-example summary {
+      cursor: pointer;
+      list-style: none;
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--color-create);
+      padding: var(--space-xs) 0;
+      user-select: none;
+    }
+    details.prompt-example summary::-webkit-details-marker { display: none; }
+    details.prompt-example:not([open]) summary::before { content: '▶ Show example'; }
+    details.prompt-example[open]       summary::before { content: '▼ Hide example'; }
+    details.prompt-example .prompt-example__body {
+      margin-top: var(--space-sm);
+      padding: var(--space-md) var(--space-lg);
+      background: var(--color-light);
+      border-left: 4px solid var(--color-create);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: var(--text-sm);
+      line-height: 1.7;
+      white-space: pre-line;
+      color: var(--color-text);
+    }
+  </style>
 </head>
 <body>
 
@@ -235,6 +263,10 @@
             <p class="challenge-card__intent">
               <strong>Intent:</strong> A strong prompt will specify the stakeholder roles, the number of questions, the methodological grounding (semi-structured interview), and ask the AI to annotate which assumption each question probes.
             </p>
+            <details class="prompt-example">
+              <summary></summary>
+              <div class="prompt-example__body">When young people from under-resourced communities receive structured job-readiness training and paid work experience, they develop the professional skills and social capital needed to secure and sustain employment — ultimately reducing barriers to economic mobility.</div>
+            </details>
           </article>
 
           <!-- Challenge 3 -->
@@ -244,11 +276,19 @@
               <span class="challenge-card__time">~10 min</span>
             </div>
             <p class="challenge-card__desc">
-              Paste a short excerpt of qualitative data — five interview snippets on a contentious topic — into an AI tool and craft a prompt that gets it to summarize the data without flattening divergent perspectives or over-generalizing from one or two voices. You can use the sample data provided below, or bring your own.
+              Craft a prompt that gets an AI to summarize qualitative interview data without flattening divergent perspectives or over-generalizing from one or two voices. Use the example transcript excerpt below, or describe your own dataset in a few sentences — no file uploads required.
             </p>
             <p class="challenge-card__intent">
               <strong>Intent:</strong> A good prompt will instruct the AI to surface both dominant themes and outliers, preserve participant voice through direct quotes, and explicitly flag where it is uncertain or where data is thin.
             </p>
+            <details class="prompt-example">
+              <summary></summary>
+              <div class="prompt-example__body">Interviewer: What changed for you after joining the program?
+Participant: Honestly, I didn't think I'd stick with it. But after the first month, I started showing up differently — like, I knew what I was doing. My supervisor noticed. She said I was one of the most reliable people on the team. That meant a lot because nobody ever said that to me before.
+
+Interviewer: What do you think made the difference?
+Participant: The practice interviews, for sure. And just having someone in my corner who believed I could do it. I never had that.</div>
+            </details>
           </article>
 
           <!-- Challenge 4 -->
@@ -263,6 +303,10 @@
             <p class="challenge-card__intent">
               <strong>Intent:</strong> A strong prompt will assign the AI a specific skeptical role (e.g., "act as a program officer who is skeptical of this finding"), set a minimum number of risks to identify, and ask it to rank them by severity. Bonus: prompt the AI to suggest what additional evidence would change its assessment.
             </p>
+            <details class="prompt-example">
+              <summary></summary>
+              <div class="prompt-example__body">We recommend the program adopt an AI-powered case management system to automatically flag at-risk youth based on attendance and engagement data, reducing the burden on case managers and enabling earlier intervention.</div>
+            </details>
           </article>
 
           <!-- Challenge 5 -->
