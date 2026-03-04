@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse all 10 community templates for the Collab path — open an artifact, remix it, and submit your version.">
+  <title>Collab Template Library — AEA/MTI Hackathon 2</title>
+  <link rel="stylesheet" href="assets/brand/brand.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <!-- ======================================================================
+       HEADER / NAV
+       ====================================================================== -->
+  <header class="site-header">
+    <div class="container">
+      <div class="cobrand-logos">
+        <a href="https://www.merltech.org" class="logo-link logo-link--merl" aria-label="MERL Tech" target="_blank" rel="noopener">
+          <img src="assets/brand/MTI%20black%20w%20color%20horizontal%20(5).png" alt="The MERL Tech Initiative logo">
+        </a>
+        <div class="cobrand-divider" aria-hidden="true"></div>
+        <a href="https://www.eval.org" class="logo-link logo-link--aea" aria-label="American Evaluation Association" target="_blank" rel="noopener">
+          <img src="assets/brand/AEA letters.png" alt="American Evaluation Association logo">
+        </a>
+      </div>
+
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav">
+        <span class="hamburger" aria-hidden="true"></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="critique.html">Critique</a>
+        <a href="create.html">Create</a>
+        <a href="collab.html" class="active">Collab</a>
+        <a href="gallery.html" class="nav-cta">Open Gallery</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Breadcrumb / back nav -->
+    <div class="back-nav-wrap">
+      <div class="container">
+        <a href="collab.html" class="back-nav">
+          <span aria-hidden="true">&larr;</span> Back to Collab
+        </a>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         PAGE HERO
+         ==================================================================== -->
+    <section class="path-hero path-hero--collab" aria-labelledby="page-title">
+      <div class="container">
+        <p class="path-hero__eyebrow">Hackathon 2 &mdash; Collab Path Resource</p>
+        <span class="path-hero__icon" aria-hidden="true">&#128218;</span>
+        <h1 class="path-hero__title" id="page-title">Collab Template Library</h1>
+        <p class="path-hero__tagline">Ten community-built templates ready to open, use, and remix. Pick one that fits your work, improve it for your context, and publish your version.</p>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         HOW TO USE
+         ==================================================================== -->
+    <section class="section--light" style="padding-block: var(--space-xl);" aria-label="How to use this library">
+      <div class="container">
+        <div style="
+          background: var(--color-collab-tint, #f0faf4);
+          border: 2px solid var(--color-collab, #2e9e6b);
+          border-left: 6px solid var(--color-collab, #2e9e6b);
+          border-radius: var(--radius);
+          padding: var(--space-lg) var(--space-xl);
+          max-width: 72ch;
+        " role="note">
+          <p style="font-weight: 700; font-size: var(--text-lg); margin-bottom: var(--space-xs);">
+            &#129309; How this works
+          </p>
+          <ol style="color: var(--color-text); line-height: 1.75; padding-left: var(--space-lg); margin: 0;">
+            <li>Click <strong>Open template</strong> to open the artifact in Claude.</li>
+            <li>Use it for a few minutes on a real or hypothetical task.</li>
+            <li>Identify 1&ndash;3 things you&rsquo;d change for your context or population.</li>
+            <li>Publish your remixed version (as a Claude Artifact, shared doc, GitHub link, etc.).</li>
+            <li><a href="form-collab.html">Submit your remix</a> with a brief change-log.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         TEMPLATE CARDS
+         ==================================================================== -->
+    <section class="options-section" aria-labelledby="templates-heading">
+      <div class="container">
+        <h2 class="section-heading" id="templates-heading">All 10 templates</h2>
+        <p class="section-subheading">Each template is a working artifact — open it, try it, then remix and submit.</p>
+
+        <div class="template-links" role="list" aria-label="All collab templates">
+
+          <!-- Template 1 -->
+          <a
+            href="https://claude.ai/public/artifacts/7a207a4c-30a2-4b0d-ad93-510026445668"
+            class="template-link"
+            target="_blank"
+            rel="noopener"
+            role="listitem"
+            aria-label="Template: Survey QA Helper"
+          >
+            <span class="template-link__icon" aria-hidden="true">&#129302;</span>
+            <div>
+              <div class="template-link__name">Survey QA Helper</div>
+              <div class="template-link__desc">A chatbot system prompt that reviews survey questions for clarity, leading language, and response-scale issues</div>
+            </div>
+            <span class="template-link__arrow" aria-hidden="true">&#8599;</span>
+          </a>
+
+          <!-- Template 2 -->
+          <a
+            href="https://claude.ai/public/artifacts/86659be2-f0a1-4334-a20f-26d092d76042"
+            class="template-link"
+            target="_blank"
+            rel="noopener"
+            role="listitem"
+            aria-label="Template: AI Red-Team Checklist"
+          >
+            <span class="template-link__icon" aria-hidden="true">&#9989;</span>
+            <div>
+              <div class="template-link__name">AI Red-Team Checklist</div>
+              <div class="template-link__desc">A structured checklist for critiquing AI-generated evaluation outputs, organized by type of error</div>
+            </div>
+            <span class="template-link__arrow" aria-hidden="true">&#8599;</span>
+          </a>
+
+          <!-- Template 3 -->
+          <a
+            href="https://claude.ai/public/artifacts/245f54dc-62d2-4334-9fa9-50aa10bf3574"
+            class="template-link"
+            target="_blank"
+            rel="noopener"
+            role="listitem"
+            aria-label="Template: Data Cleaning Automation Note"
+          >
+            <span class="template-link__icon" aria-hidden="true">&#128202;</span>
+            <div>
+              <div class="template-link__name">Data Cleaning Automation Note</div>
+              <div class="template-link__desc">A step-by-step guide and prompt template for using AI to assist with basic data cleaning tasks in evaluation datasets</div>
+            </div>
+            <span class="template-link__arrow" aria-hidden="true">&#8599;</span>
+          </a>
+
+          <!-- Template 4 -->
+          <a
+            href="https://claude.ai/public/artifacts/6e7c618e-27d7-4313-94a9-a33fa6a90d8b"
+            class="template-link"
+            target="_blank"
+            rel="noopener"
+            role="listitem"
+            aria-label="Template: Reflection Prompt Generator"
+          >
+            <span class="template-link__icon" aria-hidden="true">&#128161;</span>
+            <div>
+              <div class="template-link__name">Reflection Prompt Generator</div>
+              <div class="template-link__desc">Generates structured reflection prompts tailored to evaluation context, audience, and intended use</div>
+            </div>
+            <span class="template-link__arrow" aria-hidden="true">&#8599;</span>
+          </a>
+
+          <!-- Template 5 -->
+          <a
+            href="https://claude.ai/public/artifacts/1a986d02-c416-4089-b8e6-001dfc949a0c"
+            class="template-link"
+            target="_blank"
+            rel="noopener"
+            role="listitem"
+            aria-label="Template: Data Collection Method Matcher"
+          >
+            <span class="template-link__icon" aria-hidden="true">&#128203;</span>
+            <div>
+              <div class="template-link__name">Data Collection Method Matcher</div>
+              <div class="template-link__desc">Helps match evaluation questions to appropriate data collection methods based on context and constraints</div>
+            </div>
+            <span class="template-link__arrow" aria-hidden="true">&#8599;</span>
+          </a>
+
+          <!-- Template 6 -->
+          <a
+            href="https://claude.ai/public/artifacts/6f6471ef-78ae-4e8c-bd53-69ba7677ca8e"
+            class="template-link"
+            target="_blank"
+            rel="noopener"
+            role="listitem"
+            aria-label="Template: Logic Model Gap Finder"
+          >
+            <span class="template-link__icon" aria-hidden="true">&#128269;</span>
+            <div>
+              <div class="template-link__name">Logic Model Gap Finder</div>
+              <div class="template-link__desc">Identifies gaps, unstated assumptions, and weak links in program logic models</div>
+            </div>
+            <span class="template-link__arrow" aria-hidden="true">&#8599;</span>
+          </a>
+
+          <!-- Template 7 -->
+          <a
+            href="https://claude.ai/public/artifacts/97ec967b-5dcb-45a9-ba79-d2b566815fba"
+            class="template-link"
+            target="_blank"
+            rel="noopener"
+            role="listitem"
+            aria-label="Template: Stakeholder Analysis Helper"
+          >
+            <span class="template-link__icon" aria-hidden="true">&#128101;</span>
+            <div>
+              <div class="template-link__name">Stakeholder Analysis Helper</div>
+              <div class="template-link__desc">Assists with stakeholder mapping, interest/influence analysis, and engagement planning for evaluation projects</div>
+            </div>
+            <span class="template-link__arrow" aria-hidden="true">&#8599;</span>
+          </a>
+
+          <!-- Template 8 -->
+          <a
+            href="https://claude.ai/public/artifacts/3adf3465-47fe-459e-bcad-867e212315ea"
+            class="template-link"
+            target="_blank"
+            rel="noopener"
+            role="listitem"
+            aria-label="Template: Consent Language Simplifier"
+          >
+            <span class="template-link__icon" aria-hidden="true">&#128221;</span>
+            <div>
+              <div class="template-link__name">Consent Language Simplifier</div>
+              <div class="template-link__desc">Rewrites complex informed consent language into plain, accessible text appropriate for diverse participant populations</div>
+            </div>
+            <span class="template-link__arrow" aria-hidden="true">&#8599;</span>
+          </a>
+
+          <!-- Template 9 -->
+          <a
+            href="https://claude.ai/public/artifacts/3f21daec-8619-4143-926a-65d9d20fe128"
+            class="template-link"
+            target="_blank"
+            rel="noopener"
+            role="listitem"
+            aria-label="Template: Interview Debrief Summarizer"
+          >
+            <span class="template-link__icon" aria-hidden="true">&#127908;</span>
+            <div>
+              <div class="template-link__name">Interview Debrief Summarizer</div>
+              <div class="template-link__desc">Structures and summarizes post-interview debrief notes, surfacing emerging themes and follow-up questions</div>
+            </div>
+            <span class="template-link__arrow" aria-hidden="true">&#8599;</span>
+          </a>
+
+          <!-- Template 10 -->
+          <a
+            href="https://claude.ai/public/artifacts/b87b35c2-0380-4d2c-8dba-e36dae30b297"
+            class="template-link"
+            target="_blank"
+            rel="noopener"
+            role="listitem"
+            aria-label="Template: Evaluation Scope Checker"
+          >
+            <span class="template-link__icon" aria-hidden="true">&#128300;</span>
+            <div>
+              <div class="template-link__name">Evaluation Scope Checker</div>
+              <div class="template-link__desc">Reviews evaluation scope statements for clarity, feasibility, and alignment between questions and available resources</div>
+            </div>
+            <span class="template-link__arrow" aria-hidden="true">&#8599;</span>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         CLOSING CTA
+         ==================================================================== -->
+    <section class="checklist-section checklist-section--collab" aria-label="Ready to remix">
+      <div class="container">
+        <div class="checklist-box" style="text-align: center;">
+          <p style="font-size: var(--text-2xl); margin-bottom: var(--space-sm);" aria-hidden="true">&#129309;</p>
+          <h2 class="section-heading" style="margin-bottom: var(--space-sm);">Ready to remix?</h2>
+          <p style="color: var(--color-muted); max-width: 52ch; margin: 0 auto var(--space-xl);">
+            Once you've opened a template, used it, and published your remix, head to the submission form to record your change-log and earn your gallery card.
+          </p>
+          <a href="form-collab.html" class="btn btn--collab btn--lg">Submit your Collab entry &rarr;</a>
+          <p style="margin-top: var(--space-md);">
+            <a href="collab.html" style="font-size: var(--text-sm); color: var(--color-muted);">&larr; Back to Collab path overview</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       FOOTER
+       ======================================================================== -->
+  <footer class="site-footer" aria-label="Site footer">
+    <div class="container">
+      <div class="site-footer__grid">
+
+        <div class="site-footer__brand">
+          <div class="site-footer__cobrand">
+            <img src="assets/brand/MTI%20white%20w%20color%20horizontal%20(3).png" alt="The MERL Tech Initiative logo" class="logo-mti">
+            <div class="site-footer__cobrand-divider" aria-hidden="true"></div>
+            <img src="assets/brand/AEA letters.png" alt="American Evaluation Association logo" class="logo-aea">
+          </div>
+          <p class="site-footer__tagline">
+            AEA/MTI Hackathon 2: Critique &bull; Create &bull; Collab<br>
+            A virtual event for evaluation practitioners.
+          </p>
+        </div>
+
+        <div>
+          <p class="site-footer__heading">Paths</p>
+          <ul class="site-footer__links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="critique.html">Critique</a></li>
+            <li><a href="create.html">Create</a></li>
+            <li><a href="collab.html">Collab</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="site-footer__heading">Submit</p>
+          <ul class="site-footer__links">
+            <li><a href="form-critique.html">Submit Critique</a></li>
+            <li><a href="form-create.html">Submit Create</a></li>
+            <li><a href="form-collab.html">Submit Collab</a></li>
+            <!-- PLACEHOLDER: replace [SLACK_URL] with your Slack channel URL -->
+            <li><a href="[SLACK_URL]" target="_blank" rel="noopener">Join the Slack</a></li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="site-footer__bottom">
+        Co-hosted by the American Evaluation Association &amp; MTI/MERL Tech.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.querySelector('.nav-toggle');
+    const nav    = document.getElementById('site-nav');
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('is-open');
+    });
+    nav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        toggle.setAttribute('aria-expanded', 'false');
+        nav.classList.remove('is-open');
+      });
+    });
+  </script>
+
+</body>
+</html>
