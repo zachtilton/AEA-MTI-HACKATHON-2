@@ -1538,6 +1538,24 @@ textarea {
   margin-bottom: var(--space-xs);
 }
 
+/* Consent block */
+.consent-block {
+  background: var(--color-light, #f8f9fa);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-lg) var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.consent-block__license {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: 1.6;
+  margin: 0;
+}
+
 /* Loading spinner on button */
 .btn.is-loading {
   pointer-events: none;

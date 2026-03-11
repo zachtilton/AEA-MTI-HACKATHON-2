@@ -206,26 +206,24 @@
 
             <hr class="form-divider">
 
-            <!-- Ethics check -->
-            <div class="form-group">
+            <!-- Consent block -->
+            <div class="consent-block" role="group">
+              <p class="consent-block__license">
+                By submitting, you retain ownership of your work. We publish all submissions under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, meaning others may reuse and adapt them with credit to you.
+              </p>
+              <label class="checkbox-group" for="field-ownership">
+                <input type="checkbox" id="field-ownership" name="ownership" required value="confirmed">
+                <span class="checkbox-label">This is my own work, or I have permission to share it. <span class="required" aria-label="required">*</span></span>
+              </label>
               <label class="checkbox-group" for="field-ethics">
-                <input
-                  type="checkbox"
-                  id="field-ethics"
-                  name="ethics"
-                  required
-                  value="confirmed"
-                >
-                <span class="checkbox-label">
-                  I confirm this submission contains no personally identifiable information (PII) or real client data. Any data used is synthetic, anonymized, or hypothetical.
-                  <span class="required" aria-label="required">*</span>
-                </span>
+                <input type="checkbox" id="field-ethics" name="ethics" required value="confirmed">
+                <span class="checkbox-label">I confirm this submission contains no personally identifiable information (PII) about research participants or clients. <span class="required" aria-label="required">*</span></span>
               </label>
             </div>
 
             <!-- Submit -->
             <div class="form-submit-row">
-              <button type="submit" class="btn btn--create btn--lg" id="submit-btn">
+              <button type="submit" class="btn btn--create btn--lg" id="submit-btn" disabled>
                 Submit my Create entry
               </button>
               <p style="font-size: var(--text-xs); color: var(--color-muted); max-width: 30ch;">
@@ -315,6 +313,15 @@
     const successEl   = document.getElementById('form-success');
     const errorEl     = document.getElementById('form-error');
     const errorDetail = document.getElementById('form-error-detail');
+    const chkOwnership = document.getElementById('field-ownership');
+    const chkEthics    = document.getElementById('field-ethics');
+
+    // ── Consent: keep submit disabled until both boxes checked ────────────────
+    function updateSubmitState() {
+      submitBtn.disabled = !(chkOwnership.checked && chkEthics.checked);
+    }
+    chkOwnership.addEventListener('change', updateSubmitState);
+    chkEthics.addEventListener('change', updateSubmitState);
 
     // ── Dynamic claim + evidence labels on option change ──────────────────────
     optSel.addEventListener('change', () => {
@@ -382,7 +389,7 @@
         errorEl.classList.add('is-visible');
         errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
         submitBtn.classList.remove('is-loading');
-        submitBtn.disabled = false;
+        updateSubmitState();
         submitBtn.textContent = 'Submit my Create entry';
       }
     });
