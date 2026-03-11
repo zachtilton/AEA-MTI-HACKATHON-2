@@ -1445,6 +1445,19 @@ textarea {
 .char-counter.warning { color: var(--color-yellow); }
 .char-counter.danger  { color: var(--color-critique); }
 
+.field-notice {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius);
+  margin-top: var(--space-sm);
+}
+.field-notice--warning {
+  background: #fff8e1;
+  border: 1.5px solid #f0c040;
+  color: #5a4300;
+}
+
 /* Checkbox */
 .checkbox-group {
   display: flex;

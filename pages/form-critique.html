@@ -122,6 +122,9 @@
                 <option value="Case Snapshot: Failure or Success">Case Snapshot: Failure or Success</option>
               </select>
               <p class="field-hint" id="option-hint">Which Critique activity did you complete?</p>
+              <div class="field-notice field-notice--warning" id="case-snap-notice" hidden>
+                <strong>Real cases only.</strong> Your case must come from first-hand experience or a documented source (published report, peer account, or incident you witnessed). AI-generated scenarios and hypotheticals are not eligible and will be disqualified.
+              </div>
             </div>
 
             <hr class="form-divider">
@@ -302,15 +305,16 @@
       placeholder: 'e.g. AI can reliably summarize qualitative interview data',
     };
 
-    const form        = document.getElementById('submission-form');
-    const optSel      = document.getElementById('field-option');
-    const evLabel     = document.getElementById('evidence-label');
-    const claimInput  = document.getElementById('field-claim');
-    const claimLabelEl = document.getElementById('claim-label');
-    const submitBtn   = document.getElementById('submit-btn');
-    const successEl   = document.getElementById('form-success');
-    const errorEl     = document.getElementById('form-error');
-    const errorDetail = document.getElementById('form-error-detail');
+    const form          = document.getElementById('submission-form');
+    const optSel        = document.getElementById('field-option');
+    const evLabel       = document.getElementById('evidence-label');
+    const claimInput    = document.getElementById('field-claim');
+    const claimLabelEl  = document.getElementById('claim-label');
+    const submitBtn     = document.getElementById('submit-btn');
+    const successEl     = document.getElementById('form-success');
+    const errorEl       = document.getElementById('form-error');
+    const errorDetail   = document.getElementById('form-error-detail');
+    const caseSnapNotice = document.getElementById('case-snap-notice');
 
     // ── Dynamic labels on option change ──────────────────────────────────────
     optSel.addEventListener('change', () => {
@@ -325,6 +329,9 @@
       claimLabelEl.innerHTML = `${cfg.label} <span class="required" aria-label="required">*</span>`;
       claimInput.placeholder = cfg.placeholder;
       claimInput.setAttribute('aria-label', cfg.label);
+
+      // Case Snap real-cases-only warning
+      caseSnapNotice.hidden = opt !== 'Case Snapshot: Failure or Success';
     });
 
     // ── Character counters ────────────────────────────────────────────────────
