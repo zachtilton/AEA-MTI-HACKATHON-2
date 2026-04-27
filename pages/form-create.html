@@ -56,23 +56,21 @@
       <div class="container">
         <div class="form-wrapper">
 
-          <!-- Success message -->
-          <div class="form-message form-message--success" id="form-success" role="alert" aria-live="polite">
-            <p class="form-message__title">&#127881; Submission received!</p>
-            <p>Your Create entry is on its way to the gallery. It may take up to a minute to appear. <a href="gallery.html">View the gallery &rarr;</a></p>
+          <!-- SUBMISSIONS CLOSED -->
+          <div class="submissions-closed-page" role="status">
+            <span class="submissions-closed-page__icon" aria-hidden="true">&#128274;</span>
+            <p class="submissions-closed-page__title">Submissions are now closed</p>
+            <p class="submissions-closed-page__body">Thank you to everyone who participated in AEA/MTI Hackathon 2. The submission window has ended.</p>
+            <a href="gallery.html" class="btn btn--primary">Browse the gallery &rarr;</a>
           </div>
 
-          <!-- Error message -->
-          <div class="form-message form-message--error" id="form-error" role="alert" aria-live="polite">
-            <p class="form-message__title">Something went wrong</p>
-            <p id="form-error-detail">Your submission could not be sent. Please check your connection and try again. Your work is preserved in the form below.</p>
-          </div>
-
+          <!-- FORM PRESERVED BELOW (hidden — submissions closed) -->
           <form
             id="submission-form"
             class="submission-form"
             novalidate
             aria-label="Create path submission form"
+            style="display: none;"
           >
 
             <!-- Name + Email -->
